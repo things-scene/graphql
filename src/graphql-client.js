@@ -61,7 +61,7 @@ const ERROR_HANDLER = ({ graphQLErrors, networkError }) => {
   }
 }
 
-import COMPONENT_IMAGE from './graphql-client.png'
+import COMPONENT_IMAGE from '../assets/no-image.png'
 
 import { Component, DataSource, RectPath, Shape } from '@hatiolab/things-scene'
 

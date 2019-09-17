@@ -1,3 +1,5 @@
 {
-  "keyword": "keyword"
+  "label.client": "client component id",
+  "keyword": "keyword",
+  "label.query": "query"
 }

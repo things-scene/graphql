@@ -1,3 +1,5 @@
 {
-  "keyword": "키워드"
+  "label.client": "클라이언트 컴포넌트 ID",
+  "keyword": "키워드",
+  "label.query": "query"
 }

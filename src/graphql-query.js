@@ -2,7 +2,7 @@
  * Copyright © HatioLab Inc. All rights reserved.
  */
 
-import COMPONENT_IMAGE from './graphql-query.png'
+import COMPONENT_IMAGE from '../assets/no-image.png'
 import gql from 'graphql-tag'
 
 import { Component, DataSource, RectPath, Shape } from '@hatiolab/things-scene'
