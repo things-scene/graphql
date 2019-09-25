@@ -3,9 +3,12 @@ import GraphqlQuery from './graphql-query'
 // import GraphqlQueryList from "./graphql-query-list";
 import GraphqlClient from './graphql-client'
 import GraphqlQuickBindQuery from './graphql-quick-bind-query'
+import GraphqlMutator from './graphql-mutator'
 // import GraphqlClientJwt from "./graphql-client-jwt";
 export default [
   GraphqlQuery,
   /* GraphqlMutate, GraphqlQueryList,*/ GraphqlClient,
-  GraphqlQuickBindQuery // GraphqlClientJwt
+  GraphqlQuickBindQuery,
+  GraphqlMutator
+  // GraphqlClientJwt
 ]
