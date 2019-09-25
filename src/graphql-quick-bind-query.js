@@ -48,17 +48,11 @@ export default class GraphqlQuickBindQuery extends DataSource(RectPath(Shape)) {
     return NATURE
   }
 
-  // setElementProperties(element) {
-  //   element.onchange = () => {}
-  // }
-
-  // onchange(after, before) {
-  //   super.onchange(after, before)
-
-  //   if ('query' in after) {
-  //     delete this._querySubstitutor
-  //   }
-  // }
+  onchange(after, before) {
+    if (after.hasOwnProperty('source')) {
+      this.requestData()
+    }
+  }
 
   get period() {
     return this.state.period * 1000
@@ -207,6 +201,14 @@ export default class GraphqlQuickBindQuery extends DataSource(RectPath(Shape)) {
             }
           : SELF
     }
+  }
+
+  get source() {
+    return this.getState('source')
+  }
+
+  set source(source) {
+    this.setState('source', source)
   }
 }
 
