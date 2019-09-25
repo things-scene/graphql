@@ -1,7 +1,7 @@
 {
   "name": "@things-scene/graphql",
   "description": "graphql component for things-scene",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "things-scene": true,
   "main": "src/index.js",
   "module": "dist/things-scene-graphql.mjs",
@@ -26,6 +26,8 @@
   },
   "dependencies": {
     "@hatiolab/things-scene": "*",
+    "@things-factory/grist-ui": "^0.2.108",
+    "@things-scene/grist": "^0.1.2",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",
     "apollo-link": "^1.2.12",
