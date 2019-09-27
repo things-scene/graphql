@@ -44,7 +44,7 @@ export default class GraphqlMutator extends DataSource(RectPath(Shape)) {
   onchange(after, before) {
     var changed = after.data || after.value
     if (changed) {
-      var dirtyData = changed.original || changed.records.original
+      var dirtyData = changed.original || ''
       if (dirtyData && dirtyData.length > 0) {
         this.requestData(dirtyData)
       }
@@ -85,6 +85,7 @@ export default class GraphqlMutator extends DataSource(RectPath(Shape)) {
         `
       })
       console.log('response', response)
+      this.data = response
     }
   }
 

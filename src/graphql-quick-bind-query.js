@@ -82,10 +82,18 @@ export default class GraphqlQuickBindQuery extends DataSource(RectPath(Shape)) {
     if (props.length == 0 && ids.length == 0) return _query
 
     if (!this._querySubstitutor) {
-      this._querySubstitutor = Component.buildSubstitutor(_query, this, this.entirelyConvertObj)
+      this._querySubstitutor = Component.buildSubstitutor(_query, this, this.entirelyConvert.bind(this))
     }
 
     return this._querySubstitutor(_query)
+  }
+
+  get source() {
+    return this.getState('source')
+  }
+
+  set source(source) {
+    this.setState('source', source)
   }
 
   dispose() {
@@ -166,18 +174,16 @@ export default class GraphqlQuickBindQuery extends DataSource(RectPath(Shape)) {
     }
   }
 
-  entirelyConvertObj(value) {
-    while (value && typeof value === 'object') {
-      return (
-        Object.entries(value)
-          .reduce((a, e) => {
-            if (typeof e[1] != 'function') {
-              a += `${e[0]} : "${e[1]}", `
-            }
-            return a
-          }, '`{')
-          .slice(1, -2) + '}'
-      )
+  entirelyConvert(value) {
+    if (value && Array.isArray(value)) {
+      var arrayToString = '['
+      for (var i = 0; i < value.length; i++) {
+        if (i != 0) arrayToString += ','
+        arrayToString += this.ojbectToString(value[i])
+      }
+      return (arrayToString += ']')
+    } else if (value && typeof value === 'object') {
+      return this.ojbectToString(value)
     }
     return value
   }
@@ -203,12 +209,19 @@ export default class GraphqlQuickBindQuery extends DataSource(RectPath(Shape)) {
     }
   }
 
-  get source() {
-    return this.getState('source')
-  }
-
-  set source(source) {
-    this.setState('source', source)
+  ojbectToString(value) {
+    return (
+      Object.entries(value)
+        .reduce((a, e) => {
+          if (typeof e[1] == 'boolean' || typeof e[1] == 'number') {
+            a += `${e[0]} : ${e[1]}, `
+          } else if (typeof e[1] != 'function') {
+            a += `${e[0]} : "${e[1]}", `
+          }
+          return a
+        }, '`{')
+        .slice(1, -2) + '}'
+    )
   }
 }
 
