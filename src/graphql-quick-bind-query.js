@@ -29,6 +29,11 @@ const NATURE = {
       type: 'textarea',
       label: 'query',
       name: 'query'
+    },
+    {
+      type: 'checkbox',
+      label: 'manually-start',
+      name: 'manuallyStart'
     }
   ]
 }
@@ -70,6 +75,14 @@ export default class GraphqlQuickBindQuery extends DataSource(RectPath(Shape)) {
   set repeatTimer(repeatTimer) {
     this._stopRepeater()
     this._repeatTimer = repeatTimer
+  }
+
+  get manuallyStart() {
+    return this.state.manuallyStart
+  }
+
+  set manuallyStart(manuallyStart) {
+    this.setState('manuallyStart', manuallyStart)
   }
 
   get query() {
@@ -122,7 +135,9 @@ export default class GraphqlQuickBindQuery extends DataSource(RectPath(Shape)) {
 
   ready() {
     super.ready()
-    this._initGraphqlQuery()
+    if (!this.manuallyStart) {
+      this._initGraphqlQuery()
+    }
   }
 
   _initGraphqlQuery() {

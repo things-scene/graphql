@@ -1,5 +1,6 @@
 {
   "label.client": "client component id",
   "keyword": "keyword",
+  "label.manually-start": "manually start",
   "label.query": "query"
 }
