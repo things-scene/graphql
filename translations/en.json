@@ -1,6 +1,8 @@
 {
-  "label.client": "client component id",
-  "keyword": "keyword",
-  "label.manually-start": "manually start",
-  "label.query": "query"
+  "label.client": "Client Component ID",
+  "label.endpoint": "Endpoint",
+  "label.manually-start": "Manually Start",
+  "label.period": "Period",
+  "label.query": "Query",
+  "label.label.update-gql": "Update Query"
 }
