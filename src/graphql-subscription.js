@@ -2,7 +2,7 @@
  * Copyright © HatioLab Inc. All rights reserved.
  */
 
-import COMPONENT_IMAGE from '../assets/no-image.png'
+import COMPONENT_IMAGE from '../assets/symbol-graphql-subscription.png'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import { Component, DataSource, RectPath, Shape } from '@hatiolab/things-scene'
 

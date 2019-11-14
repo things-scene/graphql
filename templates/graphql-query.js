@@ -1,4 +1,4 @@
-import icon from '../assets/graphql-query.png'
+import icon from '../assets/icon-graphql-query.png'
 
 export default {
   type: 'graphql-query',

@@ -1,4 +1,4 @@
-import icon from '../assets/graphql-mutator.png'
+import icon from '../assets/icon-graphql-mutator.png'
 
 export default {
   type: 'graphql-mutator',

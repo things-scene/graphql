@@ -1,4 +1,4 @@
-import icon from '../assets/graphql-client.png'
+import icon from '../assets/icon-graphql-client.png'
 
 export default {
   type: 'graphql-client',

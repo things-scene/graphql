@@ -1,4 +1,4 @@
-import icon from '../assets/graphql-quick-bind-query.png'
+import icon from '../assets/icon-graphql-quick-bind-query.png'
 
 export default {
   type: 'graphql-quick-bind-query',

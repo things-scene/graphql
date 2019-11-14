@@ -1,4 +1,4 @@
-import icon from '../assets/graphql-subscription.png'
+import icon from '../assets/icon-graphql-subscription.png'
 
 export default {
   type: 'graphql-subscription',
