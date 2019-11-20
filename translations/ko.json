@@ -4,5 +4,5 @@
   "label.manually-start": "수동으로 시작",
   "label.period": "Period",
   "label.query": "Query",
-  "label.label.update-gql": "Update Query"
+  "label.update-gql": "Update Query"
 }
