@@ -3,6 +3,7 @@
  */
 import COMPONENT_IMAGE from '../assets/symbol-graphql-mutator.png'
 import gql from 'graphql-tag'
+import { gqlBuilder } from './utils/graphql'
 import { Component, DataSource, RectPath, Shape } from '@hatiolab/things-scene'
 
 const SELF = function(o) {
@@ -26,8 +27,14 @@ const NATURE = {
       type: 'textarea',
       label: 'update-gql',
       name: 'updateGql'
+    },
+    {
+      type: 'string',
+      name: 'value',
+      hidden: true
     }
-  ]
+  ],
+  'value-property': 'value'
 }
 
 export default class GraphqlMutator extends DataSource(RectPath(Shape)) {
@@ -44,13 +51,9 @@ export default class GraphqlMutator extends DataSource(RectPath(Shape)) {
     return NATURE
   }
 
-  onchange(after, before) {
-    var changed = after.data || after.value
-    if (changed) {
-      var dirtyData = changed.original || ''
-      if (dirtyData && dirtyData.length > 0) {
-        this.requestData(dirtyData)
-      }
+  onchange(after) {
+    if (after.value + '') {
+      this.requestData()
     }
   }
 
@@ -76,50 +79,31 @@ export default class GraphqlMutator extends DataSource(RectPath(Shape)) {
     super.ready()
   }
 
-  async requestData(dirtyData) {
+  async requestData() {
+    if (!this.app.isViewMode) return
     var { client, updateGql } = this.state
-    var convertAsGql = this.convertData(dirtyData)
-    if (client && convertAsGql) {
-      this.client = this.root.findById(client).client
-      updateGql = updateGql.replace('#{update}', convertAsGql)
-      var response = await this.client.query({
-        query: gql`
-          ${updateGql}
-        `
-      })
-      console.log('response', response)
-      this.data = response
-    }
-  }
 
-  convertData(dirtyData) {
-    var convertedGql = '['
-    for (var i = 0; i < dirtyData.length; i++) {
-      var dirtyDataField = dirtyData[i]
-      var dirtyDataObject = {}
-      for (var property in dirtyDataField) {
-        if (!property.indexOf('__') == 0) {
-          dirtyDataObject[property] = dirtyDataField[property]
-        }
-        if (property == '__dirty__') {
-          dirtyDataObject.cuFlag = dirtyDataField[property]
-        }
-      }
-      if (i != 0) {
-        convertedGql += ','
-      }
-      convertedGql +=
-        Object.entries(dirtyDataObject)
-          .reduce((a, e) => {
-            if (typeof e[1] != 'function') {
-              a += `${e[0]} : "${e[1]}", `
-            }
-            return a
-          }, '`{')
-          .slice(1, -2) + '}'
+    if (client) {
+      let component = this.root.findById(client)
+      this.client = component.client
+      if (!this.client) return
     }
-    convertedGql += ']'
-    return convertedGql
+
+    var mutation = (Component.buildSubstitutor(updateGql, this) || (() => updateGql))()
+    try {
+      mutation = mutation.replace(/\(.*\)/gi, params => {
+        let paramObject = eval(`({${params.slice(1, -1)}})`)
+        return '(' + gqlBuilder.buildArgs(paramObject) + ')'
+      })
+    } catch (e) {
+      console.log(e)
+    }
+
+    this.data = await this.client.query({
+      query: gql`
+        ${mutation}
+      `
+    })
   }
 }
 
