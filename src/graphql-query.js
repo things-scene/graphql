@@ -24,7 +24,7 @@ const NATURE = {
       type: 'number',
       label: 'period',
       name: 'period',
-      placeholder: 'SECONDS'
+      placeholder: 'seconds'
     },
     {
       type: 'textarea',
