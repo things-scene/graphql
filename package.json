@@ -20,6 +20,7 @@
     "@things-factory/board-app": "^1.0.0-alpha.1",
     "@things-factory/board-test": "^1.0.0-alpha.1",
     "@things-scene/form": "*",
+    "@things-scene/google-map": "*",
     "@things-scene/random": "*",
     "@things-scene/restful": "*",
     "@things-scene/table": "*"
