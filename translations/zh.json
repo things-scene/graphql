@@ -3,6 +3,5 @@
   "label.endpoint": "Endpoint",
   "label.manually-start": "Manually Start",
   "label.period": "Period",
-  "label.query": "Query",
-  "label.update-gql": "Update Query"
+  "label.query": "Query"
 }

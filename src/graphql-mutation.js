@@ -1,7 +1,7 @@
 /*
  * Copyright © HatioLab Inc. All rights reserved.
  */
-import COMPONENT_IMAGE from '../assets/symbol-graphql-mutator.png'
+import COMPONENT_IMAGE from '../assets/symbol-graphql-mutation.png'
 import gql from 'graphql-tag'
 import { gqlBuilder } from './utils/graphql'
 import { Component, DataSource, RectPath, Shape } from '@hatiolab/things-scene'
@@ -25,8 +25,8 @@ const NATURE = {
     },
     {
       type: 'textarea',
-      label: 'update-gql',
-      name: 'updateGql'
+      label: 'query',
+      name: 'query'
     },
     {
       type: 'string',
@@ -37,14 +37,14 @@ const NATURE = {
   'value-property': 'value'
 }
 
-export default class GraphqlMutator extends DataSource(RectPath(Shape)) {
+export default class GraphqlMutation extends DataSource(RectPath(Shape)) {
   static get image() {
-    if (!GraphqlMutator._image) {
-      GraphqlMutator._image = new Image()
-      GraphqlMutator._image.src = COMPONENT_IMAGE
+    if (!GraphqlMutation._image) {
+      GraphqlMutation._image = new Image()
+      GraphqlMutation._image.src = COMPONENT_IMAGE
     }
 
-    return GraphqlMutator._image
+    return GraphqlMutation._image
   }
 
   get nature() {
@@ -72,7 +72,7 @@ export default class GraphqlMutator extends DataSource(RectPath(Shape)) {
     var { left, top, width, height } = this.bounds
 
     context.beginPath()
-    context.drawImage(GraphqlMutator.image, left, top, width, height)
+    context.drawImage(GraphqlMutation.image, left, top, width, height)
   }
 
   ready() {
@@ -107,4 +107,4 @@ export default class GraphqlMutator extends DataSource(RectPath(Shape)) {
   }
 }
 
-Component.register('graphql-mutator', GraphqlMutator)
+Component.register('graphql-mutation', GraphqlMutation)

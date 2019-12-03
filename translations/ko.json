@@ -3,6 +3,5 @@
   "label.endpoint": "엔드포인트",
   "label.manually-start": "수동으로 시작",
   "label.period": "Period",
-  "label.query": "Query",
-  "label.update-gql": "Update Query"
+  "label.query": "Query"
 }
