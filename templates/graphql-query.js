@@ -14,6 +14,7 @@ export default {
     height: 100,
     fillStyle: 'cyan',
     strokeStyle: 'darkgray',
+    autoStart: true,
     query: `{
       boards {
         items {

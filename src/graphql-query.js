@@ -1,11 +1,14 @@
 /*
  * Copyright © HatioLab Inc. All rights reserved.
  */
-
 import COMPONENT_IMAGE from '../assets/symbol-graphql-query.png'
 import gql from 'graphql-tag'
-
+import { gqlBuilder } from './utils/graphql'
 import { Component, DataSource, RectPath, Shape } from '@hatiolab/things-scene'
+
+const SELF = function(o) {
+  return o
+}
 
 const NATURE = {
   mutable: false,
@@ -24,16 +27,22 @@ const NATURE = {
       type: 'number',
       label: 'period',
       name: 'period',
-      placeholder: 'seconds'
+      placeholder: 'SECONDS'
     },
     {
       type: 'textarea',
       label: 'query',
       name: 'query'
+    },
+    {
+      type: 'checkbox',
+      label: 'auto-start',
+      name: 'autoStart'
     }
   ]
 }
 
+// export default class GraphqlQuery extends DataSource(RectPath(Shape)) {
 export default class GraphqlQuery extends DataSource(RectPath(Shape)) {
   static get image() {
     if (!GraphqlQuery._image) {
@@ -42,6 +51,58 @@ export default class GraphqlQuery extends DataSource(RectPath(Shape)) {
     }
 
     return GraphqlQuery._image
+  }
+
+  get nature() {
+    return NATURE
+  }
+
+  onchange(after, before) {
+    if (after.hasOwnProperty('source')) {
+      this.requestData()
+    }
+  }
+
+  get period() {
+    return this.state.period * 1000
+  }
+
+  set period(period) {
+    this.setState('period', period)
+    this._initGraphqlQuery()
+  }
+
+  get repeatTimer() {
+    return this._repeatTimer
+  }
+
+  set repeatTimer(repeatTimer) {
+    this._stopRepeater()
+    this._repeatTimer = repeatTimer
+  }
+
+  get autoStart() {
+    return this.state.autoStart
+  }
+
+  set autoStart(autoStart) {
+    this.setState('autoStart', autoStart)
+  }
+
+  get query() {
+    var _query = this.state.query
+
+    var changedQuery = (Component.buildSubstitutor(_query, this, this.entirelyConvert.bind(this)) || (() => _query))()
+
+    return changedQuery
+  }
+
+  get source() {
+    return this.getState('source')
+  }
+
+  set source(source) {
+    this.setState('source', source)
   }
 
   dispose() {
@@ -68,29 +129,10 @@ export default class GraphqlQuery extends DataSource(RectPath(Shape)) {
   }
 
   ready() {
-    this._initGraphqlQuery()
-  }
-
-  get nature() {
-    return NATURE
-  }
-
-  get period() {
-    return this.state.period * 1000
-  }
-
-  set period(period) {
-    this.setState('period', period)
-    this._initGraphqlQuery()
-  }
-
-  get repeatTimer() {
-    return this._repeatTimer
-  }
-
-  set repeatTimer(repeatTimer) {
-    this._stopRepeater()
-    this._repeatTimer = repeatTimer
+    super.ready()
+    if (this.autoStart) {
+      this._initGraphqlQuery()
+    }
   }
 
   _initGraphqlQuery() {
@@ -125,15 +167,51 @@ export default class GraphqlQuery extends DataSource(RectPath(Shape)) {
     requestAnimationFrame(_)
   }
   async requestData() {
-    var { client, query } = this.state
-    this.client = this.root.findById(client).client
-    const response = await this.client.query({
-      query: gql`
-        ${query}
-      `
-    })
-    console.log('response', response)
-    this.data = response
+    if (!this.app.isViewMode) return
+    var { client } = this.state
+    var query = this.query
+
+    if (client && query) {
+      this.client = this.root.findById(client).client
+
+      var response = await this.client.query({
+        query: gql`
+          ${query}
+        `
+      })
+
+      console.log('response', response)
+      this.data = response
+    }
+  }
+
+  entirelyConvert(value) {
+    if (value && Array.isArray(value)) {
+      var arrayToString = '['
+      for (var i = 0; i < value.length; i++) {
+        if (i != 0) arrayToString += ','
+        arrayToString += this.ojbectToString(value[i])
+      }
+      return (arrayToString += ']')
+    } else if (value && typeof value === 'object') {
+      return this.ojbectToString(value)
+    }
+    return value
+  }
+
+  ojbectToString(value) {
+    return (
+      Object.entries(value)
+        .reduce((a, e) => {
+          if (typeof e[1] == 'boolean' || typeof e[1] == 'number') {
+            a += `${e[0]} : ${e[1]}, `
+          } else if (typeof e[1] != 'function') {
+            a += `${e[0]} : "${e[1]}", `
+          }
+          return a
+        }, '`{')
+        .slice(1, -2) + '}'
+    )
   }
 }
 

@@ -1,7 +1,7 @@
 {
   "label.client": "Client Component ID",
   "label.endpoint": "Endpoint",
-  "label.manually-start": "Manually Start",
+  "label.auto-start": "Auto Start",
   "label.period": "Period",
   "label.query": "Query"
 }
