@@ -27,11 +27,6 @@ const NATURE = {
       type: 'textarea',
       label: 'query',
       name: 'query'
-    },
-    {
-      type: 'string',
-      name: 'value',
-      hidden: true
     }
   ],
   'value-property': 'value'
@@ -89,7 +84,7 @@ export default class GraphqlMutation extends DataSource(RectPath(Shape)) {
       if (!this.client) return
     }
 
-    var mutation = (Component.buildSubstitutor(query, this) || (() => qeury))()
+    var mutation = (Component.buildSubstitutor(query, this) || (() => query))()
     try {
       mutation = mutation.replace(/\(.*\)/gi, params => {
         let paramObject = eval(`({${params.slice(1, -1)}})`)
