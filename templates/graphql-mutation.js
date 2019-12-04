@@ -14,7 +14,7 @@ export default {
     height: 100,
     lineWidth: 1,
     query: ` mutation{
-        updateMultipleBoard(patches:#{update}){
+        resolverName(patches:[]){
           id
         }
     }     

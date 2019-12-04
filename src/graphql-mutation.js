@@ -47,7 +47,7 @@ export default class GraphqlMutation extends DataSource(RectPath(Shape)) {
   }
 
   onchange(after) {
-    if (after.value + '') {
+    if ('value' in after) {
       this.requestData()
     }
   }
@@ -84,7 +84,7 @@ export default class GraphqlMutation extends DataSource(RectPath(Shape)) {
       if (!this.client) return
     }
 
-    var mutation = (Component.buildSubstitutor(query, this) || (() => query))()
+    var mutation = (Component.buildSubstitutor(query, this, JSON.stringify) || (() => query))()
     try {
       mutation = mutation.replace(/\(.*\)/gi, params => {
         let paramObject = eval(`({${params.slice(1, -1)}})`)

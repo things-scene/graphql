@@ -39,7 +39,8 @@ const NATURE = {
       label: 'auto-start',
       name: 'autoStart'
     }
-  ]
+  ],
+  'value-property': 'value'
 }
 
 // export default class GraphqlQuery extends DataSource(RectPath(Shape)) {
@@ -57,8 +58,8 @@ export default class GraphqlQuery extends DataSource(RectPath(Shape)) {
     return NATURE
   }
 
-  onchange(after, before) {
-    if (after.hasOwnProperty('source')) {
+  onchange(after) {
+    if ('value' in after) {
       this.requestData()
     }
   }
@@ -91,8 +92,15 @@ export default class GraphqlQuery extends DataSource(RectPath(Shape)) {
 
   get query() {
     var _query = this.state.query
-
-    var changedQuery = (Component.buildSubstitutor(_query, this, this.entirelyConvert.bind(this)) || (() => _query))()
+    var changedQuery = (Component.buildSubstitutor(_query, this, JSON.stringify) || (() => _query))()
+    try {
+      changedQuery = changedQuery.replace(/\(.*\)/gi, params => {
+        let paramObject = eval(`({${params.slice(1, -1)}})`)
+        return '(' + gqlBuilder.buildArgs(paramObject) + ')'
+      })
+    } catch (e) {
+      console.log(e)
+    }
 
     return changedQuery
   }
@@ -183,35 +191,6 @@ export default class GraphqlQuery extends DataSource(RectPath(Shape)) {
       console.log('response', response)
       this.data = response
     }
-  }
-
-  entirelyConvert(value) {
-    if (value && Array.isArray(value)) {
-      var arrayToString = '['
-      for (var i = 0; i < value.length; i++) {
-        if (i != 0) arrayToString += ','
-        arrayToString += this.ojbectToString(value[i])
-      }
-      return (arrayToString += ']')
-    } else if (value && typeof value === 'object') {
-      return this.ojbectToString(value)
-    }
-    return value
-  }
-
-  ojbectToString(value) {
-    return (
-      Object.entries(value)
-        .reduce((a, e) => {
-          if (typeof e[1] == 'boolean' || typeof e[1] == 'number') {
-            a += `${e[0]} : ${e[1]}, `
-          } else if (typeof e[1] != 'function') {
-            a += `${e[0]} : "${e[1]}", `
-          }
-          return a
-        }, '`{')
-        .slice(1, -2) + '}'
-    )
   }
 }
 
