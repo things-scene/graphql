@@ -81,7 +81,7 @@ export default class GraphqlMutation extends DataSource(RectPath(Shape)) {
 
   async requestData() {
     if (!this.app.isViewMode) return
-    var { client, updateGql } = this.state
+    var { client, query } = this.state
 
     if (client) {
       let component = this.root.findById(client)
@@ -89,7 +89,7 @@ export default class GraphqlMutation extends DataSource(RectPath(Shape)) {
       if (!this.client) return
     }
 
-    var mutation = (Component.buildSubstitutor(updateGql, this) || (() => updateGql))()
+    var mutation = (Component.buildSubstitutor(query, this) || (() => qeury))()
     try {
       mutation = mutation.replace(/\(.*\)/gi, params => {
         let paramObject = eval(`({${params.slice(1, -1)}})`)
