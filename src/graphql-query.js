@@ -6,10 +6,6 @@ import gql from 'graphql-tag'
 import { gqlBuilder } from './utils/graphql'
 import { Component, DataSource, RectPath, Shape } from '@hatiolab/things-scene'
 
-const SELF = function(o) {
-  return o
-}
-
 const NATURE = {
   mutable: false,
   resizable: true,
@@ -166,10 +162,11 @@ export default class GraphqlQuery extends DataSource(RectPath(Shape)) {
         return
       }
       self.requestData()
-
-      self._repeatTimer = setTimeout(() => {
-        requestAnimationFrame(_)
-      }, self.period)
+      if (!Number.isNaN(self.period) && self.period > 0) {
+        self._repeatTimer = setTimeout(() => {
+          requestAnimationFrame(_)
+        }, self.period)
+      }
     }
 
     requestAnimationFrame(_)

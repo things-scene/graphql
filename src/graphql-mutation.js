@@ -6,10 +6,6 @@ import gql from 'graphql-tag'
 import { gqlBuilder } from './utils/graphql'
 import { Component, DataSource, RectPath, Shape } from '@hatiolab/things-scene'
 
-const SELF = function(o) {
-  return o
-}
-
 const NATURE = {
   mutable: false,
   resizable: true,
