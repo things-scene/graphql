@@ -12,12 +12,11 @@ export default {
     top: 10,
     width: 100,
     height: 100,
-    lineWidth: 1,
-    query: ` mutation{
-        resolverName(patches:[]){
-          id
-        }
-    }     
-    `
+    autoStart: true,
+    query: `mutation {
+  resolverName ( patches:[] ) {
+    id
+  }
+}`
   }
 }

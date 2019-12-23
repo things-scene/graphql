@@ -12,21 +12,19 @@ export default {
     top: 10,
     width: 100,
     height: 100,
-    fillStyle: 'cyan',
-    strokeStyle: 'darkgray',
     autoStart: true,
-    query: `{
-      boards {
-        items {
-          id
-          name
-          description
-          thumbnail
-          createdAt
-          updatedAt
-        }
-        total
-      }
-    }`
+    query: `query {
+  boards {
+    items {
+      id
+      name
+      description
+      thumbnail
+      createdAt
+      updatedAt
+    }
+    total
+  }
+}`
   }
 }

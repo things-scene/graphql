@@ -1,7 +1,8 @@
 /*
  * Copyright © HatioLab Inc. All rights reserved.
  */
-import COMPONENT_IMAGE from '../assets/symbol-graphql-query.png'
+import COMPONENT_IMAGE_QUERY from '../assets/symbol-graphql-query.png'
+import COMPONENT_IMAGE_MUTATION from '../assets/symbol-graphql-mutation.png'
 import gql from 'graphql-tag'
 import { gqlBuilder } from './utils/graphql'
 import { Component, DataSource, RectPath, Shape } from '@hatiolab/things-scene'
@@ -39,17 +40,7 @@ const NATURE = {
   'value-property': 'value'
 }
 
-// export default class GraphqlQuery extends DataSource(RectPath(Shape)) {
-export default class GraphqlQuery extends DataSource(RectPath(Shape)) {
-  static get image() {
-    if (!GraphqlQuery._image) {
-      GraphqlQuery._image = new Image()
-      GraphqlQuery._image.src = COMPONENT_IMAGE
-    }
-
-    return GraphqlQuery._image
-  }
-
+class GraphQLQuery extends DataSource(RectPath(Shape)) {
   get nature() {
     return NATURE
   }
@@ -121,16 +112,9 @@ export default class GraphqlQuery extends DataSource(RectPath(Shape)) {
     delete this._client
   }
 
-  render(context) {
-    /*
-     * TODO role이 publisher 인지 subscriber 인지에 따라서 구분할 수 있는 표시를 추가할 것.
-     */
+  image() {}
 
-    var { left, top, width, height } = this.bounds
-
-    context.beginPath()
-    context.drawImage(GraphqlQuery.image, left, top, width, height)
-  }
+  render(context) {}
 
   ready() {
     super.ready()
@@ -154,21 +138,18 @@ export default class GraphqlQuery extends DataSource(RectPath(Shape)) {
   _startRepeater() {
     this._isStarted = true
 
-    var self = this
-
     // requestAnimationFrame 이 호출되지 않을 때는 requestData 호출도 하지 않도록 함.
-    function _() {
-      if (!self._isStarted) {
+    var _ = () => {
+      if (!this._isStarted) {
         return
       }
-      self.requestData()
-      if (!Number.isNaN(self.period) && self.period > 0) {
-        self._repeatTimer = setTimeout(() => {
+      this.requestData()
+      if (!Number.isNaN(this.period) && this.period > 0) {
+        this._repeatTimer = setTimeout(() => {
           requestAnimationFrame(_)
-        }, self.period)
+        }, this.period)
       }
     }
-
     requestAnimationFrame(_)
   }
   async requestData() {
@@ -191,4 +172,41 @@ export default class GraphqlQuery extends DataSource(RectPath(Shape)) {
   }
 }
 
-Component.register('graphql-query', GraphqlQuery)
+export class Query extends GraphQLQuery {
+  static get image() {
+    if (!Query._image) {
+      Query._image = new Image()
+      Query._image.src = COMPONENT_IMAGE_QUERY
+    }
+
+    return Query._image
+  }
+
+  render(context) {
+    var { left, top, width, height } = this.bounds
+
+    context.beginPath()
+    context.drawImage(Query.image, left, top, width, height)
+  }
+}
+
+export class Mutation extends GraphQLQuery {
+  static get image() {
+    if (!Mutation._image) {
+      Mutation._image = new Image()
+      Mutation._image.src = COMPONENT_IMAGE_MUTATION
+    }
+
+    return Mutation._image
+  }
+
+  render(context) {
+    var { left, top, width, height } = this.bounds
+
+    context.beginPath()
+    context.drawImage(Mutation.image, left, top, width, height)
+  }
+}
+
+Component.register('graphql-query', Query)
+Component.register('graphql-mutation', Mutation)

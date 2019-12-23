@@ -13,13 +13,14 @@ export default {
     width: 100,
     height: 100,
     lineWidth: 1,
-    query: `
-    subscription {
-      systemRebooted{
-          name
-          version
-          description
-      }
-    }`
+    endpoint: 'ws://localhost:3000/subscriptions',
+    requestType: 'mutation',
+    query: `subscription {
+  systemRebooted {
+    name
+    version
+    description
+  }
+}`
   }
 }
