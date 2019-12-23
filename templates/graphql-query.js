@@ -13,6 +13,7 @@ export default {
     width: 100,
     height: 100,
     autoStart: true,
+    period: 0,
     query: `query {
   boards {
     items {

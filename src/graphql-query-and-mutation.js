@@ -112,7 +112,7 @@ class GraphQLQuery extends DataSource(RectPath(Shape)) {
     delete this._client
   }
 
-  image() {}
+  static get image() {}
 
   render(context) {}
 

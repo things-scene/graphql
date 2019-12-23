@@ -12,7 +12,8 @@ export default {
     top: 10,
     width: 100,
     height: 100,
-    autoStart: true,
+    autoStart: false,
+    period: 0,
     query: `mutation {
   resolverName ( patches:[] ) {
     id
