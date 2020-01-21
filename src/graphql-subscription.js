@@ -35,11 +35,15 @@ export default class GraphqlSubscription extends DataSource(RectPath(Shape)) {
   }
 
   dispose() {
-    super.dispose()
-
     if (this.subscription) {
       this.subscription.unsubscribe()
     }
+    if (this.client) {
+      this.client.unsubscribeAll()
+      this.client.close(true)
+    }
+
+    super.dispose()
   }
 
   render(context) {
@@ -67,16 +71,24 @@ export default class GraphqlSubscription extends DataSource(RectPath(Shape)) {
     var { endpoint, query } = this.state
     var self = this
 
-    const client = new SubscriptionClient(endpoint, {
+    this.client = new SubscriptionClient(endpoint, {
       reconnect: true
     })
 
-    this.subscription = client.request({ query }).subscribe({
-      next({ data }) {
-        if (data) {
-          self.data = data
+    this.client.onError(() => {
+      var client = this.client
+      //readyState === 3 인 경우 url을 잘 못 입력했거나, 서버에 문제가 있는 경우이므로 reconnect = false로 변경한다.
+      if (client.status === 3) client.reconnect = false
+    })
+
+    this.client.onConnected(() => {
+      this.subscription = this.client.request({ query }).subscribe({
+        next({ data }) {
+          if (data) {
+            self.data = data
+          }
         }
-      }
+      })
     })
   }
 }
