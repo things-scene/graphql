@@ -78,9 +78,11 @@ export default class GraphqlSubscription extends DataSource(RectPath(Shape)) {
     this.client.onError(() => {
       var client = this.client
       // 보드가 실행중이면 재시도, 아니면 재연결 취소
-      if (this.disposed) client.reconnect = false
-      this.client.unsubscribeAll()
-      this.client.close(true)
+      if (this.disposed) {
+        client.reconnect = false
+        this.client.unsubscribeAll()
+        this.client.close(true)
+      }
     })
 
     this.client.onConnected(() => {
