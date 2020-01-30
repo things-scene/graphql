@@ -79,7 +79,11 @@ class GraphQLQuery extends DataSource(RectPath(Shape)) {
 
   get query() {
     var _query = this.state.query
-    var changedQuery = (Component.buildSubstitutor(_query, this, JSON.stringify) || (() => _query))()
+    var objToVal = exp => {
+      if (typeof exp === 'string') return exp
+      else return JSON.stringify(exp)
+    }
+    var changedQuery = (Component.buildSubstitutor(_query, this, objToVal) || (() => _query))()
     try {
       changedQuery = changedQuery.replace(/\(.*\)/gi, params => {
         let paramObject = eval(`({${params.slice(1, -1)}})`)
