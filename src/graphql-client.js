@@ -125,6 +125,16 @@ export default class GraphqlClient extends DataSource(RectPath(Shape)) {
 
   dispose() {
     super.dispose()
+
+    try {
+      if (this._client) {
+        this._client.stop()
+      }
+    } catch (e) {
+      console.error(e)
+    }
+    delete this._client
+
   }
 
   render(context) {

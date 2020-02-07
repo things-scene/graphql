@@ -108,17 +108,11 @@ class GraphQLQuery extends DataSource(RectPath(Shape)) {
     super.dispose()
     this._stopRepeater()
 
-    try {
-      this._client && this._client.end(true, () => {})
-    } catch (e) {
-      console.error(e)
-    }
-    delete this._client
   }
 
-  static get image() {}
+  static get image() { }
 
-  render(context) {}
+  render(context) { }
 
   ready() {
     super.ready()
