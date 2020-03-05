@@ -47,7 +47,7 @@ class GraphQLQuery extends DataSource(RectPath(Shape)) {
 
   onchange(after) {
     if ('value' in after) {
-      this.requestData()
+      if (after.value) this.requestData()
     }
   }
 
@@ -107,12 +107,11 @@ class GraphQLQuery extends DataSource(RectPath(Shape)) {
   dispose() {
     super.dispose()
     this._stopRepeater()
-
   }
 
-  static get image() { }
+  static get image() {}
 
-  render(context) { }
+  render(context) {}
 
   ready() {
     super.ready()
